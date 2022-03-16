@@ -14,6 +14,7 @@ import { UserModule }               from './user/user.module';
 import { PublicationModule }        from './publication/publication.module';
 import { PurchaseModule }           from './purchase/purchase.module';
 import { LicenseModule }            from './license/license.module';
+import {LoginModule} from "./login/login.module";
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { LicenseModule }            from './license/license.module';
         PublicationModule,
         PurchaseModule,
         LicenseModule,
+        LoginModule,
         AppRoutingModule
     ],
     declarations: [

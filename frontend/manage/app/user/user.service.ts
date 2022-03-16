@@ -25,6 +25,7 @@ export class UserService extends CrudService<User> {
             name: jsonObj.name,
             email: jsonObj.email,
             password: jsonObj.password,
+            role: jsonObj.role,
             clearPassword: null,
             hint: jsonObj.hint
         }
@@ -37,6 +38,7 @@ export class UserService extends CrudService<User> {
             name: obj.name,
             email: obj.email,
             password: obj.password,
+            role: obj.role,
             hint: obj.hint
         };
 

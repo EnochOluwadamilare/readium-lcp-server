@@ -13,7 +13,8 @@ CREATE TABLE `user` (
     `name` varchar(64) NOT NULL,
     `email` varchar(64) NOT NULL,
     `password` varchar(64) NOT NULL,
-    `hint` varchar(64) NOT NULL
+    `hint` varchar(64) NOT NULL,
+    `role` varchar(64) NOT NULL
 );
 
 CREATE TABLE `purchase` (

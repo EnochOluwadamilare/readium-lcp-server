@@ -55,6 +55,7 @@ type User struct {
 	Name     string `json:"name,omitempty"`
 	Email    string `json:"email,omitempty"`
 	Password string `json:"password,omitempty"`
+	Role     string `json:"role,omitempty"`
 	Hint     string `json:"hint"`
 }
 
@@ -89,7 +90,7 @@ func (user dbUser) GetByEmail(email string) (User, error) {
 }
 
 func (user dbUser) Add(newUser User) error {
-	add, err := user.db.Prepare("INSERT INTO user (uuid, name, email, password, hint) VALUES (?, ?, ?, ?, ?)")
+	add, err := user.db.Prepare("INSERT INTO user (uuid, name, email, password, role ,hint) VALUES (?, ?, ?, ?, ?, ?)")
 	if err != nil {
 		return err
 	}
@@ -102,7 +103,11 @@ func (user dbUser) Add(newUser User) error {
 	}
 	newUser.UUID = uid.String()
 
-	_, err = add.Exec(newUser.UUID, newUser.Name, newUser.Email, newUser.Password, newUser.Hint)
+	if len(newUser.Role) <= 0 {
+		_, err = add.Exec(newUser.UUID, newUser.Name, newUser.Email, newUser.Password, "user", newUser.Hint)
+		return err
+	}
+	_, err = add.Exec(newUser.UUID, newUser.Name, newUser.Email, newUser.Password, newUser.Role, newUser.Hint)
 	return err
 }
 

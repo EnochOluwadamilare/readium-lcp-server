@@ -1,0 +1,30 @@
+<div class="container" >
+  <div class="row">
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <h5 class="card-title text-center">Sign In</h5>
+          <form class="form-signin" [formGroup]="loginForm">
+
+            <div class="form-group">
+              <label for="inputEmail" [ngClass]="{'required': checkField(loginForm.get('username')) }">Email address *</label>
+              <input type="email" [ngClass]="{'required': checkField(loginForm.get('username')) }" class="form-control rounded" id="inputEmail" aria-describedby="emailHelp" placeholder="Enter email" formControlName="username">
+            </div>
+
+            <div class="form-group">
+              <label for="inputPassword" [ngClass]="{'required': checkField(loginForm.get('password')) }">Password *</label>
+              <input type="password" class="form-control rounded" [ngClass]="{'required': checkField(loginForm.get('password')) }" id="inputPassword" aria-describedby="passwordHelp" placeholder="Enter password" formControlName="password">
+            </div>
+
+            <p class="alert alert-danger" role="alert" *ngIf="error">
+              <strong>There was an error!</strong><br>Please check your username/password and try again.
+            </p>
+
+            <button id="submitButton" class="btn btn-lg btn-primary btn-block text-uppercase" type="button" [disabled]="!loginForm.valid || processing" (click)="onSubmitButtonClicked()">{{ processing ? 'Validating...' : 'Sign in' }}</button>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
