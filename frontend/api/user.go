@@ -27,6 +27,7 @@ package staticapi
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -185,6 +186,52 @@ func DecodeJSONUser(r *http.Request) (webuser.User, error) {
 	user := webuser.User{}
 	err := dec.Decode(&user)
 	return user, err
+}
+
+//Login searches a client by his email
+func Login(w http.ResponseWriter, r *http.Request, s IServer) {
+	var loginRequest struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+	var dec *json.Decoder
+	if ctype := r.Header["Content-Type"]; len(ctype) > 0 && ctype[0] == api.ContentType_JSON {
+		dec = json.NewDecoder(r.Body)
+	}
+	err := dec.Decode(&loginRequest)
+	if err != nil {
+		problem.Error(w, r, problem.Problem{Detail: "incorrect JSON User " + err.Error()}, http.StatusBadRequest)
+		return
+	}
+
+	//Dangerous
+	fmt.Println(loginRequest.Email, loginRequest.Password)
+
+	if user, err := s.UserAPI().GetByEmail(loginRequest.Email); err == nil {
+		if loginRequest.Password == user.Password {
+			w.Header().Set("Content-Type", api.ContentType_JSON)
+			enc := json.NewEncoder(w)
+
+			if err = enc.Encode(user); err == nil {
+				return
+			}
+			problem.Error(w, r, problem.Problem{Detail: err.Error()}, http.StatusInternalServerError)
+		} else {
+			problem.Error(w, r, problem.Problem{Detail: "incorrect User Details"}, http.StatusBadRequest)
+		}
+	} else {
+		switch err {
+		case webuser.ErrNotFound:
+			{
+				problem.Error(w, r, problem.Problem{Detail: err.Error()}, http.StatusNotFound)
+			}
+		default:
+			{
+				problem.Error(w, r, problem.Problem{Detail: err.Error()}, http.StatusInternalServerError)
+			}
+		}
+	}
+	return
 }
 
 //CreateUser creates a user in the database

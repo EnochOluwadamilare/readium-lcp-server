@@ -138,6 +138,8 @@ func New(
 	s.handleFunc(sr.R, usersRoutesPathPrefix, staticapi.GetUsers).Methods("GET")
 	//
 	s.handleFunc(sr.R, usersRoutesPathPrefix, staticapi.CreateUser).Methods("POST")
+
+	s.handleFunc((sr.R, usersRoutesPathPrefix,"/login", staticapi.Login).Methods("POST")
 	//
 	s.handleFunc(usersRoutes, "/{id}", staticapi.GetUser).Methods("GET")
 	s.handleFunc(usersRoutes, "/{id}", staticapi.UpdateUser).Methods("PUT")

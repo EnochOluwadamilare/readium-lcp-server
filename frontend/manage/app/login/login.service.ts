@@ -27,7 +27,7 @@ export class LoginService {
     private http: Http;
     constructor (http: Http) {
         this.http = http;
-        this.baseUrl = Config.frontend.url + '/api/v1/users';
+        this.baseUrl = Config.frontend.url + '/api/v1/users/login';
     }
 
     // constructor(
